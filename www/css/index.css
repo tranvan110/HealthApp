@@ -1,0 +1,12 @@
+@media (min-width: 100px) {
+    .row {
+        width: 100%;
+        display: table;
+        table-layout: fixed;
+    }
+
+    .col {
+        display: table-cell;
+        text-align: center;
+    }
+}
