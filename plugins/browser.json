@@ -15,6 +15,9 @@
     },
     "mx.ferreyra.callnumber": {
       "PACKAGE_NAME": "com.Company.App"
+    },
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "com.Company.App"
     }
   },
   "dependent_plugins": {}

@@ -18,6 +18,7 @@
     "cordova-browser": "^6.0.0",
     "cordova-ios": "^5.0.0",
     "cordova-plugin-dialogs": "2.0.1",
+    "cordova-plugin-whitelist": "1.3.3",
     "cordova-sms-plugin": "1.0.0",
     "mx.ferreyra.callnumber": "~0.0.2"
   },
@@ -26,7 +27,8 @@
     "plugins": {
       "cordova-plugin-dialogs": {},
       "mx.ferreyra.callnumber": {},
-      "cordova-sms-plugin": {}
+      "cordova-sms-plugin": {},
+      "cordova-plugin-whitelist": {}
     },
     "platforms": [
       "ios",
