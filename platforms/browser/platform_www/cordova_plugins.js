@@ -37,9 +37,9 @@ module.exports.metadata =
 // TOP OF METADATA
 {
     "cordova-plugin-dialogs": "2.0.1",
+    "cordova-plugin-whitelist": "1.3.3",
     "cordova-sms-plugin": "1.0.0",
-    "mx.ferreyra.callnumber": "0.0.2",
-    "cordova-plugin-whitelist": "1.3.3"
+    "mx.ferreyra.callnumber": "0.0.2"
 }
 // BOTTOM OF METADATA
 });

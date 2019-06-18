@@ -5,67 +5,67 @@ var number = "0359203461";
 var message = "Danger!";
 var dataBase;
 
-var timeFormat = 'MM/DD/YYYY HH:mm';
-function newDate(days) {
-    return moment().add(days, 'd').toDate();
-}
-function newDateString(days) {
-    return moment().add(days, 'd').format(timeFormat);
-}
+// var timeFormat = 'MM/DD/YYYY HH:mm';
+// function newDate(days) {
+//     return moment().add(days, 'd').toDate();
+// }
+// function newDateString(days) {
+//     return moment().add(days, 'd').format(timeFormat);
+// }
 
-var color = Chart.helpers.color;
-var config = {
-    type: 'line',
-    data: {
-        labels: [ // Date Objects
-            newDate(0),
-            newDate(1),
-            newDate(2),
-            newDate(3),
-            newDate(4),
-            newDate(5),
-            newDate(6)
-        ],
-        datasets: [{
-            label: 'Heart Rate',
-            backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
-            borderColor: window.chartColors.red,
-            fill: false,
-            data: [],
-        }, {
-            label: 'Temperature',
-            backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
-            borderColor: window.chartColors.blue,
-            fill: false,
-            data: [],
-        }]
-    },
-    options: {
-        title: {
-            text: 'Chart.js Time Scale'
-        },
-        scales: {
-            xAxes: [{
-                type: 'time',
-                time: {
-                    parser: timeFormat,
-                    // round: 'day'
-                    tooltipFormat: 'll HH:mm'
-                },
-                scaleLabel: {
-                    display: false,
-                    labelString: 'Date'
-                }
-            }],
-            yAxes: [{
-                scaleLabel: {
-                    display: false,
-                    labelString: 'value'
-                }
-            }]
-        },
-    }
-};
+// var color = Chart.helpers.color;
+// var config = {
+//     type: 'line',
+//     data: {
+//         labels: [ // Date Objects
+//             newDate(0),
+//             newDate(1),
+//             newDate(2),
+//             newDate(3),
+//             newDate(4),
+//             newDate(5),
+//             newDate(6)
+//         ],
+//         datasets: [{
+//             label: 'Heart Rate',
+//             backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
+//             borderColor: window.chartColors.red,
+//             fill: false,
+//             data: [],
+//         }, {
+//             label: 'Temperature',
+//             backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
+//             borderColor: window.chartColors.blue,
+//             fill: false,
+//             data: [],
+//         }]
+//     },
+//     options: {
+//         title: {
+//             text: 'Chart.js Time Scale'
+//         },
+//         scales: {
+//             xAxes: [{
+//                 type: 'time',
+//                 time: {
+//                     parser: timeFormat,
+//                     // round: 'day'
+//                     tooltipFormat: 'll HH:mm'
+//                 },
+//                 scaleLabel: {
+//                     display: false,
+//                     labelString: 'Date'
+//                 }
+//             }],
+//             yAxes: [{
+//                 scaleLabel: {
+//                     display: false,
+//                     labelString: 'value'
+//                 }
+//             }]
+//         },
+//     }
+// };
 
 ////////////////////////////////////////////////////////////////////////////////
 function onDeviceReady() {
@@ -74,7 +74,11 @@ function onDeviceReady() {
     dataBase = openDatabase('historyData', '1.0', 'History data', 2 * 1024 * 1024);
     dataBase.transaction(function (tx) {
         tx.executeSql("CREATE TABLE IF NOT EXISTS History (heart, temp, date)");
-        tx.executeSql("INSERT INTO History (heart, temp, date) VALUES (60, 37, '2019-05-30')");
+        tx.executeSql("INSERT INTO History (heart, temp, date) VALUES (62, 37.2, '2019-05-28')");
+        tx.executeSql("INSERT INTO History (heart, temp, date) VALUES (60, 37.9, '2019-05-30')");
+        tx.executeSql("INSERT INTO History (heart, temp, date) VALUES (65, 37.5, '2019-06-10')");
+        tx.executeSql("INSERT INTO History (heart, temp, date) VALUES (68, 37.7, '2019-06-18')");
+        tx.executeSql("INSERT INTO History (heart, temp, date) VALUES (61, 37.1, '2019-06-19')");
     });
 
     // dataBase.transaction(function (tx) {

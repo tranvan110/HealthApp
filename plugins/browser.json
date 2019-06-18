@@ -10,13 +10,13 @@
     "cordova-plugin-dialogs": {
       "PACKAGE_NAME": "com.Company.App"
     },
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "com.Company.App"
+    },
     "cordova-sms-plugin": {
       "PACKAGE_NAME": "com.Company.App"
     },
     "mx.ferreyra.callnumber": {
-      "PACKAGE_NAME": "com.Company.App"
-    },
-    "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "com.Company.App"
     }
   },
