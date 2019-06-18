@@ -1,0 +1,21 @@
+{
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {}
+  },
+  "installed_plugins": {
+    "cordova-plugin-dialogs": {
+      "PACKAGE_NAME": "com.Company.App"
+    },
+    "mx.ferreyra.callnumber": {
+      "PACKAGE_NAME": "com.Company.App"
+    },
+    "cordova-sms-plugin": {
+      "PACKAGE_NAME": "com.Company.App"
+    }
+  },
+  "dependent_plugins": {}
+}

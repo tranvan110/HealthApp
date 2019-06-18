@@ -1,0 +1,17 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "D:\\\\PortableApp\\\\arduino-1.8.9\\\\portable\\\\packages\\\\esp8266\\\\tools\\\\**",
+                "D:\\\\PortableApp\\\\arduino-1.8.9\\\\portable\\\\packages\\\\esp8266\\\\hardware\\\\esp8266\\\\2.5.1\\\\**"
+            ],
+            "forcedInclude": [],
+            "intelliSenseMode": "msvc-x64",
+            "compilerPath": "D:\\PortableApp\\msys64\\mingw64\\bin\\gcc.exe",
+            "cStandard": "c11",
+            "cppStandard": "c++17"
+        }
+    ],
+    "version": 4
+}
