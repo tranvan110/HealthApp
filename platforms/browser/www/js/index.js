@@ -1,8 +1,8 @@
 var heartRate, temperature;
 var smsSend = false;
 var socket;
-var number = "";
-var message = "";
+var number = "0359203461";
+var message = "Danger!";
 var dataBase;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -10,13 +10,13 @@ function onDeviceReady() {
     dataBase = openDatabase('myData', '1.0', 'My data', 2 * 1024 * 1024);
     dataBase.transaction(function (tx) {
         tx.executeSql("CREATE TABLE IF NOT EXISTS USER(id unique, name)");
-        tx.executeSql("INSERT INTO USER (id, name) VALUES (1, 'peter')");
-        tx.executeSql("INSERT INTO USER (id, name) VALUES (2, 'paul')");
+        tx.executeSql("INSERT INTO USER (id, temp, rate, date) VALUES (1, 37.5, 65, '10/06/2019')");
+        tx.executeSql("INSERT INTO USER (id, temp, rate, date) VALUES (2, 37.5, 65, '10/06/2019')");
     });
 
     setInterval(function () {
         if ((heartRate < 30 || heartRate > 120 || temperature < 25 || temperature > 39) && smsSend == false) {
-            //SentCall();
+            SentCall();
             socket.emit("btAlarm", "1");
             smsSend = true;
             var btAlarm = document.querySelector("#btAlarm");
@@ -71,7 +71,7 @@ function SentCall() {
     var error = function (e) {
         alert("Message Failed: " + e);
     };
-    // window.plugins.CallNumber.callNumber(success, error, number, false);
+    window.plugins.CallNumber.callNumber(success, error, number, false);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -93,7 +93,7 @@ function SentSms() {
     var error = function (e) {
         alert("Message Failed: " + e);
     };
-    //sms.send(number, message, options, success, error);
+    sms.send(number, message, options, success, error);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -129,6 +129,12 @@ window.onload = function () {
         var heartElemt = document.querySelector("#heartRate");
         if (heartElemt) heartElemt.innerHTML = heartRate;
         heartUpdate(heartRate);
+
+        var today = new Date();
+        var date = today.getDate() + "/" + (today.getMonth() + 1) + "/" + today.getFullYear();
+        var history = document.querySelector("#history");
+        history.innerHTML += '<li class="table-view-cell">' + date +
+            '<span class="badge">Rate: ' + heartRate + " - Temp: " + temperature + '</span ></li >';
     });
 
     socket.on("temperature", function (message) {
@@ -161,8 +167,8 @@ window.onload = function () {
 
         dataBase.transaction(function (tx) {
             tx.executeSql("SELECT * FROM USER", [], (transaction, result) => {
-                console.log(result.rows.item(0));
-                console.log(result.rows.item(1));
+                // console.log(result.rows.item(0));
+                // console.log(result.rows.item(1));
             }, (transaction, error) => {
             }
             );

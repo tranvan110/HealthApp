@@ -52,7 +52,8 @@
         <h1 class="title">Setting</h1>
     </header>
     <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
-    <div class="content">
+    <div class="content content-padded">
+        <h4>Device setting</h4>
         <ul class="table-view">
             <li class="table-view-cell">
                 Alarm
@@ -67,15 +68,29 @@
                 </div>
             </li>
         </ul>
-        <div class="content-padded">
+        <div>
             <span>Update time</span>
-            <input id="updateRate" type="text" placeholder="2">
+            <input id="updateRate" type="number" placeholder="2">
             <span>Measure time</span>
-            <input id="measureRate" type="text" placeholder="20">
+            <input id="measureRate" type="number" placeholder="20">
             <span>Sleep time</span>
-            <input id="sleepRate" type="text" placeholder="30">
-            <button class="btn btn-positive btn-block" onclick="SaveNumber()">Save</button>
+            <input id="sleepRate" type="number" placeholder="30">
+            <button class="btn btn-positive btn-block">Save</button>
         </div>
+        <h4>Device history</h4>
+        <!-- <div class="row">
+            <div class="col">
+                <input id="startTime" type="date" placeholder="30">
+            </div>
+            <div class="col" style="width: 30px">
+                <span>to</span>
+            </div>
+            <div class="col">
+                <input id="endTime" type="date" placeholder="30">
+            </div>
+        </div> -->
+        <ul id="history" class="table-view">
+        </ul>
     </div>
     <!-- <script type="text/javascript" src="cordova.js"></script> -->
     <!-- <script type="text/javascript" src="js/ratchet.js"></script> -->
