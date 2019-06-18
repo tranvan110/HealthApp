@@ -23,7 +23,7 @@
         <allow-intent href="itms-apps:*" />
     </platform>
     <engine name="ios" spec="^5.0.0" />
-    <engine name="android" spec="^6.4.0" />
+    <engine name="android" spec="^7.1.4" />
     <plugin name="cordova-plugin-dialogs" spec="2.0.1" />
     <plugin name="mx.ferreyra.callnumber" spec="~0.0.2" />
     <plugin name="cordova-sms-plugin" spec="1.0.0" />

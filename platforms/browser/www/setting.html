@@ -35,12 +35,14 @@
     <!-- <meta name="msapplication-tap-highlight" content="no"> -->
     <!-- <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover"> -->
 
+    <!-- Sets initial viewport load and disables zooming  -->
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
     <!-- Makes your prototype chrome-less once bookmarked to your phone's home screen -->
-    <!-- <meta name="apple-mobile-web-app-capable" content="yes"> -->
-    <!-- <meta name="apple-mobile-web-app-status-bar-style" content="black"> -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
-    <!-- <link rel="stylesheet" type="text/css" href="css/ratchet.css"> -->
-    <!-- <link rel="stylesheet" type="text/css" href="css/index.css"> -->
+    <link rel="stylesheet" type="text/css" href="css/ratchet.css">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
     <title>Setting</title>
 </head>
 
@@ -57,13 +59,13 @@
         <ul class="table-view">
             <li class="table-view-cell">
                 Alarm
-                <div id="btSmsEnable" class="toggle active">
+                <div id="btAlarmEnable" class="toggle active">
                     <div class="toggle-handle"></div>
                 </div>
             </li>
             <li class="table-view-cell">
                 Notification
-                <div id="btCallEnable" class="toggle active">
+                <div id="btNotifyEnable" class="toggle active">
                     <div class="toggle-handle"></div>
                 </div>
             </li>
@@ -75,26 +77,27 @@
             <input id="measureRate" type="number" placeholder="20">
             <span>Sleep time</span>
             <input id="sleepRate" type="number" placeholder="30">
-            <button class="btn btn-positive btn-block">Save</button>
+            <button class="btn btn-positive btn-block" onclick="Save()">Save</button>
         </div>
         <h4>Device history</h4>
-        <!-- <div class="row">
+        <div class="row">
             <div class="col">
-                <input id="startTime" type="date" placeholder="30">
+                <input id="startTime" type="date" value="2019-01-01" onchange="historyUpdate()">
             </div>
             <div class="col" style="width: 30px">
                 <span>to</span>
             </div>
             <div class="col">
-                <input id="endTime" type="date" placeholder="30">
+                <input id="endTime" type="date" value="2019-01-01" onchange="historyUpdate()">
             </div>
-        </div> -->
+        </div>
         <ul id="history" class="table-view">
         </ul>
     </div>
-    <!-- <script type="text/javascript" src="cordova.js"></script> -->
-    <!-- <script type="text/javascript" src="js/ratchet.js"></script> -->
-    <!-- <script type="text/javascript" src="js/index.js"></script> -->
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/ratchet.js"></script>
+    <script type="text/javascript" src="js/socket.io.slim.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
 </body>
 
 </html>

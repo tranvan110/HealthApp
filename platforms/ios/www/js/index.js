@@ -1,37 +1,106 @@
 var heartRate, temperature;
-var smsSend = false;
+var smsSend = false, alarmEn = true, notifyEn = true;
 var socket;
 var number = "0359203461";
 var message = "Danger!";
 var dataBase;
 
+var timeFormat = 'MM/DD/YYYY HH:mm';
+function newDate(days) {
+    return moment().add(days, 'd').toDate();
+}
+function newDateString(days) {
+    return moment().add(days, 'd').format(timeFormat);
+}
+
+var color = Chart.helpers.color;
+var config = {
+    type: 'line',
+    data: {
+        labels: [ // Date Objects
+            newDate(0),
+            newDate(1),
+            newDate(2),
+            newDate(3),
+            newDate(4),
+            newDate(5),
+            newDate(6)
+        ],
+        datasets: [{
+            label: 'Heart Rate',
+            backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
+            borderColor: window.chartColors.red,
+            fill: false,
+            data: [],
+        }, {
+            label: 'Temperature',
+            backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
+            borderColor: window.chartColors.blue,
+            fill: false,
+            data: [],
+        }]
+    },
+    options: {
+        title: {
+            text: 'Chart.js Time Scale'
+        },
+        scales: {
+            xAxes: [{
+                type: 'time',
+                time: {
+                    parser: timeFormat,
+                    // round: 'day'
+                    tooltipFormat: 'll HH:mm'
+                },
+                scaleLabel: {
+                    display: false,
+                    labelString: 'Date'
+                }
+            }],
+            yAxes: [{
+                scaleLabel: {
+                    display: false,
+                    labelString: 'value'
+                }
+            }]
+        },
+    }
+};
+
 ////////////////////////////////////////////////////////////////////////////////
 function onDeviceReady() {
-    dataBase = openDatabase('myData', '1.0', 'My data', 2 * 1024 * 1024);
+    console.log("onDeviceReady");
+
+    dataBase = openDatabase('historyData', '1.0', 'History data', 2 * 1024 * 1024);
     dataBase.transaction(function (tx) {
-        tx.executeSql("CREATE TABLE IF NOT EXISTS USER(id unique, name)");
-        tx.executeSql("INSERT INTO USER (id, temp, rate, date) VALUES (1, 37.5, 65, '10/06/2019')");
-        tx.executeSql("INSERT INTO USER (id, temp, rate, date) VALUES (2, 37.5, 65, '10/06/2019')");
+        tx.executeSql("CREATE TABLE IF NOT EXISTS History (heart, temp, date)");
+        tx.executeSql("INSERT INTO History (heart, temp, date) VALUES (60, 37, '2019-05-30')");
     });
+
+    // dataBase.transaction(function (tx) {
+    //     tx.executeSql("SELECT * FROM History", [], (transaction, result) => {
+    //         console.log(result.rows);
+    //     }, (transaction, error) => {
+    //         console.log(error);
+    //     });
+    // });
 
     setInterval(function () {
         if ((heartRate < 30 || heartRate > 120 || temperature < 25 || temperature > 39) && smsSend == false) {
             SentCall();
             socket.emit("btAlarm", "1");
             smsSend = true;
-            var btAlarm = document.querySelector("#btAlarm");
-            if (btAlarm) btAlarm.className = "toggle active";
-            var status = document.querySelector("#status");
-            if (status) status.innerHTML = "btAlarm" + " Auto On";
 
-            navigator.notification.beep(2);
-            navigator.notification.alert(message, function () { }, "Danger!", "Done");
-            console.log("Danger!");
+            if (alarmEn) {
+                navigator.notification.beep(2);
+                navigator.notification.alert(message, function () { }, "Danger!", "Done");
+                console.log("Danger!");
+            }
         }
         else if (heartRate > 30 && heartRate < 120 && temperature > 25 && temperature < 39) {
             smsSend = false;
         }
-    }, 200);
+    }, 1000);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -51,6 +120,64 @@ function tempUpdate(temp) {
     indexPath++;
     var tempGraph = document.querySelector("#tempGraph");
     if (tempGraph) tempGraph.setAttribute("d", tempPath);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+function dataBaseUpdate(heart, temp) {
+    var today = new Date();
+    var date = today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
+    console.log(date + ": dataBaseUpdate");
+    dataBase.transaction(function (tx) {
+        tx.executeSql("CREATE TABLE IF NOT EXISTS History (heart, temp, date)");
+        tx.executeSql("INSERT INTO History (heart, temp, date) VALUES (?, ?, ?)", [heart, temp, date]);
+    });
+
+    // if (config.data.datasets.length > 0) {
+    //     config.data.labels.push(newDate(config.data.labels.length));
+    //     config.data.datasets[0].data.push(heart);
+    //     config.data.datasets[1].data.push(temp);
+
+    //     // for (var index = 0; index < config.data.datasets.length; ++index) {
+    //     //     config.data.datasets[index].data.push(heart);
+    //     // }
+
+    //     window.myLine.update();
+    // }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+function historyUpdate() {
+    console.log("historyUpdate");
+    var startTime = document.getElementById("startTime").value;
+    var endTime = document.getElementById("endTime").value;
+
+    var history = document.querySelector("#history");
+    if (history) {
+        history.innerHTML = "";
+        dataBase.transaction(function (tx) {
+            tx.executeSql("SELECT * FROM History WHERE date BETWEEN ? AND ?", [startTime, endTime], (transaction, result) => {
+                var len = result.rows.length;
+                for (var i = 0; i < len; i++) {
+                    var item = result.rows.item(i);
+                    history.innerHTML += '<li class="table-view-cell">HeartRate: ' + item.heart + ' - Temperature: ' + item.temp +
+                        '<span class="badge">' + item.date + '</span ></li >';
+                }
+            }, (transaction, error) => {
+                console.log(error);
+            });
+        });
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+function Save() {
+    var updateRate = 'U' + document.getElementById("updateRate").value.toString();
+    var measureRate = 'M' + document.getElementById("measureRate").value.toString();
+    var sleepRate = 'S' + document.getElementById("sleepRate").value.toString();
+    console.log(updateRate + "-" + measureRate + "-" + sleepRate);
+    socket.emit("CmdSent", updateRate);
+    socket.emit("CmdSent", measureRate);
+    socket.emit("CmdSent", sleepRate);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -129,12 +256,7 @@ window.onload = function () {
         var heartElemt = document.querySelector("#heartRate");
         if (heartElemt) heartElemt.innerHTML = heartRate;
         heartUpdate(heartRate);
-
-        var today = new Date();
-        var date = today.getDate() + "/" + (today.getMonth() + 1) + "/" + today.getFullYear();
-        var history = document.querySelector("#history");
-        history.innerHTML += '<li class="table-view-cell">' + date +
-            '<span class="badge">Rate: ' + heartRate + " - Temp: " + temperature + '</span ></li >';
+        dataBaseUpdate(heartRate, temperature);
     });
 
     socket.on("temperature", function (message) {
@@ -147,15 +269,15 @@ window.onload = function () {
     });
 
     document.addEventListener("toggle", function (event) {
+        console.log(event.target.id + ":" + event.target.className);
         if (event.target.className == "toggle active") {
             socket.emit(event.target.id, "1");
-            var status = document.querySelector("#status");
-            if (status) status.innerHTML = event.target.id + " On";
+            if (event.target.id == "btAlarmEnable") alarmEn = true;
+            if (event.target.id == "btNotifyEnable") notifyEn = true;
         } else {
             socket.emit(event.target.id, "0");
-            smsSend = false;
-            var status = document.querySelector("#status");
-            if (status) status.innerHTML = event.target.id + " Off";
+            if (event.target.id == "btAlarmEnable") alarmEn = false;
+            if (event.target.id == "btNotifyEnable") notifyEn = false;
         }
     });
 
@@ -164,14 +286,8 @@ window.onload = function () {
         if (numberTxt) numberTxt.value = number;
         var messageTxt = document.getElementById("messageTxt");
         if (messageTxt) messageTxt.value = message;
-
-        dataBase.transaction(function (tx) {
-            tx.executeSql("SELECT * FROM USER", [], (transaction, result) => {
-                // console.log(result.rows.item(0));
-                // console.log(result.rows.item(1));
-            }, (transaction, error) => {
-            }
-            );
-        });
     });
+
+    // var ctx = document.getElementById('canvas').getContext('2d');
+    // window.myLine = new Chart(ctx, config);
 }

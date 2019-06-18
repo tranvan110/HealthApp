@@ -13,11 +13,11 @@
               "count": 1
             },
             {
-              "xml": "<feature name=\"CallNumber\"><param name=\"android-package\" value=\"mx.ferreyra.callnumber.CFCallNumber\" /></feature>",
+              "xml": "<feature name=\"Sms\"><param name=\"android-package\" value=\"com.cordova.plugins.sms.Sms\" /></feature>",
               "count": 1
             },
             {
-              "xml": "<feature name=\"Sms\"><param name=\"android-package\" value=\"com.cordova.plugins.sms.Sms\" /></feature>",
+              "xml": "<feature name=\"CallNumber\"><param name=\"android-package\" value=\"mx.ferreyra.callnumber.CFCallNumber\" /></feature>",
               "count": 1
             }
           ]
@@ -25,17 +25,17 @@
       },
       "AndroidManifest.xml": {
         "parents": {
-          "/*": [
-            {
-              "xml": "<uses-permission android:name=\"android.permission.CALL_PHONE\" />",
-              "count": 1
-            },
+          "/manifest": [
             {
               "xml": "<uses-feature android:name=\"android.hardware.telephony\" android:required=\"false\" />",
               "count": 1
             }
           ],
-          "/manifest": [
+          "/*": [
+            {
+              "xml": "<uses-permission android:name=\"android.permission.CALL_PHONE\" />",
+              "count": 1
+            },
             {
               "xml": "<uses-feature android:name=\"android.hardware.telephony\" android:required=\"false\" />",
               "count": 1
@@ -49,10 +49,10 @@
     "cordova-plugin-dialogs": {
       "PACKAGE_NAME": "com.Company.App"
     },
-    "mx.ferreyra.callnumber": {
+    "cordova-sms-plugin": {
       "PACKAGE_NAME": "com.Company.App"
     },
-    "cordova-sms-plugin": {
+    "mx.ferreyra.callnumber": {
       "PACKAGE_NAME": "com.Company.App"
     }
   },
@@ -75,25 +75,25 @@
       ]
     },
     {
-      "id": "mx.ferreyra.callnumber.CallNumber",
-      "file": "plugins/mx.ferreyra.callnumber/www/CallNumber.js",
-      "pluginId": "mx.ferreyra.callnumber",
-      "clobbers": [
-        "call"
-      ]
-    },
-    {
       "id": "cordova-sms-plugin.Sms",
       "file": "plugins/cordova-sms-plugin/www/sms.js",
       "pluginId": "cordova-sms-plugin",
       "clobbers": [
         "window.sms"
       ]
+    },
+    {
+      "id": "mx.ferreyra.callnumber.CallNumber",
+      "file": "plugins/mx.ferreyra.callnumber/www/CallNumber.js",
+      "pluginId": "mx.ferreyra.callnumber",
+      "clobbers": [
+        "call"
+      ]
     }
   ],
   "plugin_metadata": {
     "cordova-plugin-dialogs": "2.0.1",
-    "mx.ferreyra.callnumber": "0.0.2",
-    "cordova-sms-plugin": "1.0.0"
+    "cordova-sms-plugin": "1.0.0",
+    "mx.ferreyra.callnumber": "0.0.2"
   }
 }
